@@ -22,8 +22,9 @@ export default function Lobby({ onMatch }) {
       console.log("[Lobby] got matchId=", id);
       onMatch(id, timedMode);
     } catch (e) {
-      console.error("[Lobby] findMatch error", e);
-      setError(e.message || "Failed to find match. Check console.");
+      const errorMsg = e?.message || e?.toString() || "Failed to find match";
+      console.error("[Lobby] findMatch error", errorMsg, e);
+      setError(errorMsg);
       setSearching(false);
     }
   }

@@ -42,16 +42,28 @@ export async function findMatch(timedMode = false) {
     // Player 2 path: join existing match
     const matchId = findRes.payload.matchId;
     console.log("[findMatch] P2 joining existing match", matchId);
-    await _socket.joinMatch(matchId);
-    return matchId;
+    try {
+      await _socket.joinMatch(matchId);
+      console.log("[findMatch] P2 joined successfully");
+      return matchId;
+    } catch (err) {
+      console.error("[findMatch] P2 join failed:", err);
+      throw new Error(`Failed to join match: ${err?.message || err}`);
+    }
   }
 
   // Step 2: no open match — create one and join it (Player 1)
   const createRes = await client.rpc(_session, "create_match", { timedMode });
   const matchId = createRes.payload.matchId;
   console.log("[findMatch] P1 created match", matchId);
-  await _socket.joinMatch(matchId);
-  console.log("[findMatch] P1 joined, waiting for P2...");
+  
+  try {
+    await _socket.joinMatch(matchId);
+    console.log("[findMatch] P1 joined successfully");
+  } catch (err) {
+    console.error("[findMatch] P1 join failed:", err);
+    throw new Error(`Failed to join created match: ${err?.message || err}`);
+  }
 
   // Step 3: poll until P2 joins (server broadcasts OP_STATE with 2 players)
   // Game component handles the waiting state — just return matchId

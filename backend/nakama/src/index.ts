@@ -225,9 +225,10 @@ function matchJoinAttempt(
   presence: nkruntime.Presence,
   metadata: Record<string, any>
 ) {
-  // Allow up to 2 players to join (check players dict, not presences which are updated after)
-  const assignedCount = Object.keys(state.players).length;
-  const canJoin = assignedCount < 2;
+  // Accept only if fewer than 2 players in match (allows first and second player to join)
+  const playerCount = Object.keys(state.players).length;
+  const canJoin = playerCount < 2;
+  
   return { state, accept: canJoin };
 }
 
