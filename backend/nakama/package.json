@@ -1,0 +1,16 @@
+{
+  "name": "nakama",
+  "version": "1.0.0",
+  "description": "Nakama server module for Tic-Tac-Toe",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "typescript": "^6.0.2"
+  }
+}
